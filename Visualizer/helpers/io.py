@@ -38,6 +38,10 @@ def rebaseTimestampMarker(baseTimestamp, df1, df2):
 def rebaseTimestamp(baseTimestamp, df3):
     df3.index = df3.index - baseTimestamp
 
+# def rebaseVideo(baseTimestamp, dfv):
+#     dfv['timestamp'] = dfv['timestamp'] - baseTimestamp
+#     return dfv
+
 def loadVideo(filename):
     pass
 
