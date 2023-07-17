@@ -54,10 +54,11 @@ if __name__ == "__main__":
     out = cv2.VideoWriter(filename, fourcc, (fps/2), (int(width), int(height)))
     frameCounter = 1
     outlet = createOutlet(dev, filename)
+    relevant = False
 
     # initialize Pose estimator
-    mp_drawing = mp.solutions.drawing_utils
-    mp_pose = mp.solutions.pose
+    mp_drawing = mp.solutions.drawing_utils # type: ignore
+    mp_pose = mp.solutions.pose # type: ignore
 
     pose = mp_pose.Pose(
         min_detection_confidence=0.9,
@@ -86,14 +87,13 @@ if __name__ == "__main__":
         lm = keypoints.pose_landmarks
         lmPose = mp_pose.PoseLandmark
 
-        # draw detected skeleton on the frame
-        # mp_drawing.draw_landmarks(
-        #     image, keypoints.pose_landmarks, mp_pose.POSE_CONNECTIONS)
-
         # give value to angles if landmark is not found
         es_ang = 0
         ew_ang = 0
         total_ang = 0
+        
+        #TODO: determine if frame is relevant or not
+        relevant = True
 
         if lm is not None:
 
@@ -224,8 +224,10 @@ if __name__ == "__main__":
                 #                 (10, 30), font, 0.9, green, 2)
 
         # show the final output
-        out.write(flipped)
-        outlet.push_sample([frameCounter, es_ang, ew_ang, total_ang])
+        print(es_ang)
+        if relevant:
+            out.write(flipped)
+            outlet.push_sample([frameCounter, es_ang, ew_ang, total_ang])
         cv2.imshow('Movement Feedback', flipped)
         frameCounter += 1
         if cv2.waitKey(1) == ord('q'):

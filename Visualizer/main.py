@@ -2,7 +2,6 @@ from helpers.plotter import *
 from helpers.preprocessing import *
 from dataCleanup import *
 import matplotlib.pyplot as plt
-from movVideo import userID
 
 
 #specify markers colors for plotting the data
@@ -66,7 +65,7 @@ if __name__ == '__main__':
     plotACC(ax2)
 
     fig.tight_layout()
-    plt.savefig('angANDacc_'+ userID +'.png')
+    plt.show()
 
 
 

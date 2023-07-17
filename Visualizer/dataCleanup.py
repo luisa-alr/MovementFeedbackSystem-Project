@@ -40,9 +40,10 @@ def videoCleanup(df, beginMovTime, stop):
             row = df.iloc[i]
             timestamp = row['timestamp']
             frame = row['ACC_0']
-            s_ang = df.iloc[i+1]['ACC_0']
-            w_ang = df.iloc[i+2]['ACC_0']
-            newdf = newdf.append({'timestamp': timestamp, 'frame': frame, 'shoulder angle': s_ang, 'elbow angle': w_ang, 'total angle': t_ang}, ignore_index=True)  
+            s_ang = row['ACC_1']
+            w_ang = row['ACC_2']
+            t_ang = row['ACC_3']
+            newdf = newdf.append({'timestamp':timestamp, 'frame':frame, 'shoulder angle':s_ang, 'elbow angle':w_ang, 'total angle':t_ang}, ignore_index=True) # type: ignore
 
     lenght = len(newdf.index)
     increment = lenght / (stop - beginMovTime)
@@ -61,11 +62,11 @@ def videoCleanup(df, beginMovTime, stop):
 
 # load recordings that you want results from, process is made manually, can we make it automated?
 df_marker = loadRecording(
-    "./test2_custommarkerstream_userslulu-custom_marker_stream-2023-07-06_09-41-501688636756.p", columns=["marker"])
-df1 = loadRecording("./test2_xsensdot-dot2_xsensdot-dot2-acc1688636756.p") #hand
-df2 = loadRecording("./test2_xsensdot-dot4_xsensdot-dot4-acc1688636756.p") #wrist
+    "./luisatest_custommarkerstream_userslulu-custom_marker_stream-2023-07-17_09-17-151689585549.p", columns=["marker"])
+df1 = loadRecording("./luisatest_xsensdot-dot2_xsensdot-dot2-acc1689585549.p") #hand
+df2 = loadRecording("./luisatest_xsensdot-dot3_xsensdot-dot3-acc1689585549.p") #wrist
 dfv = loadRecording(
-    "./test2_framemarker1_961f7689-287d-4b53-93c4-51c2dd0835791688636756.p")
+    "./luisatest_framemarker1_landmarks1689585549.p")
 
 # adjust the timestamps in each dataset so that they are all based on the same timeframe
 baseTimestamp = df1.index[0]
