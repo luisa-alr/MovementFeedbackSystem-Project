@@ -2,6 +2,7 @@
 import cv2
 import mediapipe as mp
 from helpers import *
+from recorder import relevance
 
 #Start of program
 print("Hello, let's improve some movements! :) \n\n")
@@ -54,7 +55,6 @@ if __name__ == "__main__":
     out = cv2.VideoWriter(filename, fourcc, (fps/2), (int(width), int(height)))
     frameCounter = 1
     outlet = createOutlet(dev, filename)
-    relevant = False
 
     # initialize Pose estimator
     mp_drawing = mp.solutions.drawing_utils # type: ignore
@@ -91,9 +91,6 @@ if __name__ == "__main__":
         es_ang = 0
         ew_ang = 0
         total_ang = 0
-        
-        #TODO: determine if frame is relevant or not
-        relevant = True
 
         if lm is not None:
 
@@ -144,22 +141,6 @@ if __name__ == "__main__":
                         # Join movement landmarks (movement to be improved).
                         cv2.line(flipped, (r_shldr_x, r_shldr_y),
                                 (r_elb_x, r_elb_y), red, 4)
-                    
-    
-                # Display text strings to showcase angles
-                # angle_text_string = 'Arm : ' + \
-                #     str(int(es_ang)) + '  Forearm : ' + str(int(ew_ang))
-
-
-                # Determine whether good posture or bad posture.
-                # The threshold angles have been set based on intuition.
-                # if (ew_ang > 30 and ew_ang < 155) or (es_ang > 30 and es_ang < 155):
-                #     cv2.putText(flipped, angle_text_string,
-                #                 (10, 30), font, 0.9, red, 2)
-
-                # else:
-                #     cv2.putText(flipped, angle_text_string,
-                #                 (10, 30), font, 0.9, green, 2)
 
             # if user is right handed, now that the video is flipped, we need to select the left side landmarks
             if move == rightHand:
@@ -209,25 +190,11 @@ if __name__ == "__main__":
                         cv2.line(flipped, (l_shldr_x, l_shldr_y),
                                 (l_elb_x, l_elb_y), red, 4)
 
-                # Text strings for display.
-                # angle_text_string = 'Arm : ' + \
-                #     str(int(es_ang)) + '  Forearm : ' + str(int(ew_ang))
-
-                # Determine whether good posture or bad posture.
-                # The threshold angles have been set based on intuition.
-                # if (ew_ang > 30 and ew_ang < 155) or (es_ang > 30 and es_ang < 155):
-                #     cv2.putText(flipped, angle_text_string,
-                #                 (10, 30), font, 0.9, red, 2)
-
-                # else:
-                #     cv2.putText(flipped, angle_text_string,
-                #                 (10, 30), font, 0.9, green, 2)
-
         # show the final output
-        print(es_ang)
-        if relevant:
-            out.write(flipped)
-            outlet.push_sample([frameCounter, es_ang, ew_ang, total_ang])
+        #TODO: can I get relevance from recorder?
+        # if relevance:
+        out.write(flipped)
+        outlet.push_sample([frameCounter, es_ang, ew_ang, total_ang])
         cv2.imshow('Movement Feedback', flipped)
         frameCounter += 1
         if cv2.waitKey(1) == ord('q'):

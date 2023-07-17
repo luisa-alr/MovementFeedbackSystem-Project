@@ -1,9 +1,10 @@
 from threading import Thread
-from pylsl import StreamInfo, StreamInlet, StreamOutlet, resolve_byprop
+from pylsl import StreamInfo, StreamOutlet, StreamInlet, resolve_byprop, IRREGULAR_RATE
 import time
+import keyboard
+import pandas as pd
 
 class RecordThread(Thread):
-
     def __init__(self, inlet):
         Thread.__init__(self, daemon=True)
         self.running = False
@@ -21,42 +22,18 @@ class RecordThread(Thread):
                 if self.valuable:
                      self.data.append(sample)
         self.inlet.close_stream()
-
-
-# class VisualizeThread(Thread):
-
-#     def __init__(self):
-#         Thread.__init__(self, daemon=True)
-#         self.running = False
-#         #self.timeCorrection = inlet.time_correction()
-
-#     def animate(ax):
-#         #defining arrays to plot timestamp and total acc
-#         x = []
-#         y = []
         
-#         #for each timestamp pulled from stream
-#         for ts in RecordThread.timestamp:
-#             #append values to array so that they are displayed
-#             x.append(ts)
-#             y.append(calcTotalAcc(sample))
-#             print(x[])
-
-            
-#             #this will update the plot window
-#             if len(x) > 100:
-#                 x.pop(0)
-#                 y.pop(0)
-
-#         #clear animation colors
-#         ax.clear()
-            
-#         #plot
-#         ax.plot(x, y)
+class VisualizeThread(Thread):
+    def __init__(self):
+        Thread.__init__(self, daemon=True)
+        self.running = False
 
 #declaring variables
-rawData = []
+#TODO: add relevant angles to dataframe
+df_from_recorder = pd.DataFrame(columns=['timestamp', 'frame', 'shoulder angle', 'elbow angle', 'total angle'])
 source_id = "landmarks"
+testing = True
+relevance = False
 
 # resolve a stream on the lab network
 print("Resolving stream")
@@ -74,33 +51,23 @@ info = StreamInfo(name='ThrowMarkerStream', type='Markers', channel_count=1, nom
 markerOutlet = StreamOutlet(info)
 
 
-# while loop:
-#     if pressed s key:
-#         markerOutlet.push_sample(["START_TESTING"])
-#     if pressed t key:
-#         markerOutlet.push_sample(["START_THROW"])
-#         relevance = True
-#     if pressed y key:
-#         markerOutlet.push_sample(["STOP_THROW"])
-#         relevance = False
-#     if pressed p key:
-#         markerOutlet.push_sample(["STOP_TESTING"])
+#loop to get markers onto stream
+while testing:
+    if keyboard.read_key() == "t":
+        markerOutlet.push_sample(["START_TESTING"])
+    if keyboard.read_key() == "s":
+        markerOutlet.push_sample(["START_THROW"])
+        relevance = True
+    if keyboard.read_key() == "d":
+        markerOutlet.push_sample(["STOP_THROW"])
+        relevance = False
+    if keyboard.read_key() == "y":
+        markerOutlet.push_sample(["STOP_TESTING"])
+        testing = False
+    if relevance == True:
+        df_from_recorder = df_from_recorder.append({'timestamp':timestamp, 'frame':frame, 'shoulder angle':s_ang, 'elbow angle':w_ang, 'total angle':t_ang}, ignore_index=True) # type: ignore
 
-
-
-#vizualize daata gathered
-# visualize_thread = VisualizeThread()
-# visualize_thread.start()
-# print("started visualize")
-
-#create figure to be displayed
-# fig1 = plt.figure()
-# ax1 = fig1.add_subplot(1, 1, 1)
-# ani1 = animation.FuncAnimation(fig1, VisualizeThread.animate(ax1), interval=100)
-# print("ploted figure")
-# plt.show()
-
-time.sleep(5)
+# time.sleep(5)
 print(record_thread.data)
 record_thread.running = False
 record_thread.join()
