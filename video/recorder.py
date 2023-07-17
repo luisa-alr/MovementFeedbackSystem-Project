@@ -1,10 +1,6 @@
 from threading import Thread
-from pylsl import *
+from pylsl import StreamInfo, StreamInlet, StreamOutlet, resolve_byprop
 import time
-import numpy as np
-import matplotlib.pyplot as plt
-import matplotlib.animation as animation
-import scipy.signal as signal
 
 class RecordThread(Thread):
 
@@ -74,7 +70,7 @@ record_thread.start()
 print("Started recording")
 
 # make it work
-info = StreamInfo(name='ThrowMarkerStream', type='Markers', channel_count=1, nominal_srate=IRREGULAR_RATE, channel_format='string', source_id='markers')
+info = StreamInfo(name='ThrowMarkerStream', type='Markers', channel_count=1, nominal_srate=IRREGULAR_RATE, channel_format='string', source_id='markers') # type: ignore
 markerOutlet = StreamOutlet(info)
 
 

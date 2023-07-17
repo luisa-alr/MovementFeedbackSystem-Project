@@ -1,14 +1,7 @@
-import numpy as np
-import mediapipe as mp
 import math as m
+import numpy as np
 from pylsl import StreamInfo, StreamOutlet
 import os
-
-def landmarks_to_list(landmarks):
-    list = []
-    for landmark in landmarks.landmark:
-        list.extend([landmark.x, landmark.y, landmark.z, landmark.visibility])
-    return list
 
 # define function to determine offset distance between two points
 def findDistance(x1, x2, y1, y2):
@@ -50,7 +43,7 @@ def createOutlet(index, filename):
     streamName = 'FrameMarker'+str(index+1)
     info = StreamInfo(name=streamName,
                       type='videostream',
-                      channel_format='float32',
+                      channel_format='float32', # type: ignore
                       channel_count=4,
                       source_id='landmarks')
 
@@ -61,12 +54,3 @@ def createOutlet(index, filename):
     videoFile = filename
     info.desc().append_child_value("videoFile", videoFile)
     return StreamOutlet(info)
-
-# def identifyPoses():
-#     pose_connections = mp.solutions.pose.POSE_CONNECTIONS
-#     mp_pose = mp.solutions.pose
-
-#     poselandmarks_list = []
-#     for idx, elt in enumerate(mp_pose.PoseLandmark):
-#         lm_str = repr(elt).split('.')[1].split(':')[0]
-#         poselandmarks_list.append(lm_str)

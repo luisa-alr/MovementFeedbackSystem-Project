@@ -13,7 +13,7 @@ def updateBarANG(ax, percent, color, plotName):
     ax.set_xticks([])
     ax.set_title('Angle Accuracy ' + plotName)
     
-    if __name__ == '__main__':
+if __name__ == '__main__':
     elbBadAng = 0
     elbGoodAng = 0
     shldrBadAng = 0
@@ -75,4 +75,5 @@ def updateBarANG(ax, percent, color, plotName):
         
         # Pause briefly to show the updated plot
         plt.pause(0.1)
+        
     plt.show()
