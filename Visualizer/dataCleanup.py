@@ -33,7 +33,6 @@ def DataCleanup(df, beginMovTime, stop):
 
 
 def videoCleanup(df, beginMovTime, stop):
-    #test if I need this
     newdf = pd.DataFrame(columns=['timestamp', 'frame', 'shoulder angle', 'elbow angle', 'total angle'])
     for i in range(0, len(df), 4):
         if i + 2 < len(df):
