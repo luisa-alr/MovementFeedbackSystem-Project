@@ -1,6 +1,5 @@
 from threading import Thread
 from pylsl import StreamInfo, StreamOutlet, StreamInlet, resolve_byprop, IRREGULAR_RATE
-import time
 import keyboard
 import pandas as pd
 
@@ -10,17 +9,14 @@ class RecordThread(Thread):
         self.running = False
         self.inlet = inlet
         self.data = []
-        self.valuable = True
         #self.timeCorrection = inlet.time_correction()
 
     def run(self):
         self.running = True
-        self.inlet.open_stream(timeout=10.0)
         while self.running:
-            sample, ts = self.inlet.pull_sample() #timeout=1.0
+            sample, ts = self.inlet.pull_sample() 
             if ts:
-                if self.valuable:
-                     self.data.append(sample)
+                self.data.append([ts, sample])
         self.inlet.close_stream()
         
 class VisualizeThread(Thread):
@@ -53,19 +49,29 @@ markerOutlet = StreamOutlet(info)
 
 #loop to get markers onto stream
 while testing:
-    if keyboard.read_key() == "t":
+    if keyboard.read_key() == "a":
         markerOutlet.push_sample(["START_TESTING"])
     if keyboard.read_key() == "s":
         markerOutlet.push_sample(["START_THROW"])
         relevance = True
+        for record in record_thread.data:
+            # Extract the relevant angles from the data sample
+            timestamp = record['timestamp']
+            frame = record['frame']
+            shoulder_angle = record['shoulder angle']
+            elbow_angle = record['elbow_angle']
+            total_angle = record['total_angle']
+            
+        # Append the angles and timestamp to the dataframe
+        df_from_recorder = df_from_recorder.append({'timestamp': timestamp, 'frame': frame, 'shoulder angle': shoulder_angle, 'elbow angle': elbow_angle, 'total angle': total_angle}, ignore_index=True) #type: ignore
+        
     if keyboard.read_key() == "d":
         markerOutlet.push_sample(["STOP_THROW"])
         relevance = False
-    if keyboard.read_key() == "y":
+    if keyboard.read_key() == "f":
         markerOutlet.push_sample(["STOP_TESTING"])
         testing = False
-    if relevance == True:
-        df_from_recorder = df_from_recorder.append({'timestamp':timestamp, 'frame':frame, 'shoulder angle':s_ang, 'elbow angle':w_ang, 'total angle':t_ang}, ignore_index=True) # type: ignore
+    
 
 # time.sleep(5)
 print(record_thread.data)

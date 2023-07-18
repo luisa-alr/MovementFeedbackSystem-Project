@@ -192,9 +192,9 @@ if __name__ == "__main__":
 
         # show the final output
         #TODO: can I get relevance from recorder?
-        # if relevance:
-        out.write(flipped)
-        outlet.push_sample([frameCounter, es_ang, ew_ang, total_ang])
+        if relevance:
+            out.write(flipped)
+            outlet.push_sample([frameCounter, es_ang, ew_ang, total_ang])
         cv2.imshow('Movement Feedback', flipped)
         frameCounter += 1
         if cv2.waitKey(1) == ord('q'):
