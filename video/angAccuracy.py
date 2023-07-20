@@ -1,6 +1,5 @@
 import matplotlib.pyplot as plt
 import pandas as pd
-from recorder import df_from_recorder
 
 # Plotting details for angle bar graph (dynamic bar)
 def updateBarANG(ax, percent, color, plotName):
@@ -13,9 +12,8 @@ def updateBarANG(ax, percent, color, plotName):
     ax.set_title('Angle Accuracy ' + plotName)
     
 if __name__ == '__main__':
-    #TODO: get angles into a csv df from recorder
-    df_from_recorder.to_csv('recorderAngles.csv', sep=',', encoding='utf-8')
-    df_from_recorder = pd.read_csv('recorderAngles.csv')
+    #get angles into a csv df from recorder
+    data = pd.read_csv('recorderAngles.csv')
     
     elbBadAng = 0
     elbGoodAng = 0
@@ -24,12 +22,12 @@ if __name__ == '__main__':
     elbAngPercent = 0
     shldrAngPercent = 0
 
-    total_iterations = len(df_from_recorder)  # Total number of iterations
+    total_iterations = len(data)  # Total number of iterations
 
     fig, (ax1, ax2) = plt.subplots(2, figsize=(7, 6))
 
     # Iterate over your timestamps and angles data
-    for index, row in df_from_recorder.iterrows():
+    for index, row in data.iterrows():
         # Convert angle to radians
         aShldr = row['shoulder angle']
         aElb = row['elbow angle']
@@ -78,5 +76,7 @@ if __name__ == '__main__':
         
         # Pause briefly to show the updated plot
         plt.pause(0.1)
+        
+    print('Angle Accuracy Display is done! :)')
         
     plt.show()
