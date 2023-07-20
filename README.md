@@ -38,4 +38,4 @@ The movVideo.py file is implemented with an output stream that pushes markers in
 ## To receive feedback
 *  --> After stopping the movVideo.py recording, run angAccuracy to receive a dynamic plot of the angles created by the user's movements during the recording. The plot will display how well/bad the alignment of the shoulder-elbow and elbow-wrist was during the movement. Indicating to the user which body area needs improvement/adjustments.
 *  --> After stopping the LSL recording, update the name of the pickle files into dataCleanup.py and run main.py. This program will generate two plots. Plot 1 shows the angle variation of the shoulder-elbow and elbow-wrist angles during movement, while plot 2 displays the acceleration of the hand and wrist during the movement. 
-*  + Because streams were recorded through LSL, all plots and data displays are time synchronized. 
++ Because streams were recorded through LSL, all plots and data displays are time synchronized. 
