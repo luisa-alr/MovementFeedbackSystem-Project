@@ -29,10 +29,10 @@ Tested with python3 on MacOS Ventura 13.4 with an Apple M1 chip.
 
 ## Pushing markers into LSL streams
 The movVideo.py file is implemented with an output stream that pushes markers into the lsl recording. The markers should be pushed while the user is performing the movement:
-    * press 'a' to determine the start of testing
-    * press 's' to determine the start of the free throw movement
-    * press 'd' to determine when the free throw movement finishes
-    * press 'f' to determine the end of testing
+    * a. press 'a' to determine the start of testing
+    * s. press 's' to determine the start of the free throw movement
+    * d. press 'd' to determine when the free throw movement finishes
+    * f. press 'f' to determine the end of testing
     
 
 ## To receive feedback
