@@ -82,7 +82,6 @@ if __name__ == "__main__":
             
             if relevance == True:
                 data.append([frameCounter, es_ang, ew_ang, t_ang])
-                print(data)
             
             if testing == 'done':
                 df_data = pd.DataFrame(data, columns=['frame', 'shoulder angle', 'elbow angle', 'total angle'])

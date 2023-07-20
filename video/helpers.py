@@ -49,33 +49,22 @@ def createOutlet(index, filename):
     info.desc().append_child_value("videoFile", videoFile)
     return StreamOutlet(info)
 
-def reactToKeyPress(key, markerOutlet, relevance, testing):
-    if key == ord("1"):
-        markerOutlet.push_sample(["TEST_1"])
-    if key == ord("2"):
-        markerOutlet.push_sample(["TEST_2"])
-    if key == ord("3"):
-        markerOutlet.push_sample(["TEST_3"])
-        
+def reactToKeyPress(key, markerOutlet, relevance, testing):  
     if key == ord("a"):
         markerOutlet.push_sample(["START_TESTING"])
         testing = "started"
-        print('"a" pushed & testing started')
 
     if key == ord("s"):
         markerOutlet.push_sample(["START_THROW"])
         relevance = True
-        print('"s" pushed & relevant')
 
     if key == ord("d"):
         markerOutlet.push_sample(["STOP_THROW"])
         relevance = False
-        print('"d" pushed & not relevant')
 
     if key == ord("f"):
         markerOutlet.push_sample(["STOP_TESTING"])
         testing = "done"
-        print('"f" pushed & testing is done')
         
     return relevance, testing
         
