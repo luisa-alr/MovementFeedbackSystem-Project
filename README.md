@@ -28,12 +28,11 @@ Tested with python3 on MacOS Ventura 13.4 with an Apple M1 chip.
    * 4.f. Specify a folder location and file name. Each stream will have a separate pickle file. A summary file has details about the streams recorded.
 
 ## Pushing markers into LSL streams
---> movVideo.py is implemented with an output stream that pushes markers into the lsl recording.
-    The markers should be pushed while the user is performing the movement:
-    * -> press 'a' to determine the start of testing
-    * -> press 's' to determine the start of the free throw movement
-    * -> press 'd' to determine when the free throw movement finishes
-    * -> press 'f' to determine the end of testing
+--> movVideo.py is implemented with an output stream that pushes markers into the lsl recording. The markers should be pushed while the user is performing the movement:
+    * press 'a' to determine the start of testing
+    * press 's' to determine the start of the free throw movement
+    * press 'd' to determine when the free throw movement finishes
+    * press 'f' to determine the end of testing
     
 
 ## To receive feedback
