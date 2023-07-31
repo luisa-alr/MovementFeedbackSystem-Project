@@ -36,7 +36,7 @@ def createOutlet(index, filename):
     info = StreamInfo(
         name=streamName,
         type="videostream", nominal_srate=30,
-        channel_format="float32", 
+        channel_format="float32",  # type: ignore
         channel_count=4,
         source_id="landmarks",
     )
@@ -52,18 +52,22 @@ def createOutlet(index, filename):
 def reactToKeyPress(key, markerOutlet, relevance, testing):  
     if key == ord("a"):
         markerOutlet.push_sample(["START_TESTING"])
+        print('started')
         testing = "started"
 
     if key == ord("s"):
         markerOutlet.push_sample(["START_THROW"])
+        print('started throw')
         relevance = True
 
     if key == ord("d"):
         markerOutlet.push_sample(["STOP_THROW"])
+        print('finished throw')
         relevance = False
 
     if key == ord("f"):
         markerOutlet.push_sample(["STOP_TESTING"])
+        print('stopped')
         testing = "done"
         
     return relevance, testing

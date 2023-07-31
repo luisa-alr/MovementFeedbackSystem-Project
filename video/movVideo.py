@@ -3,14 +3,13 @@ import cv2
 import mediapipe as mp
 from helpers import *
 from pylsl import StreamInfo, StreamOutlet
-import pandas as pd
+import pandas as pd 
 
 # Start of program
 userID, group, move = startProgram()
 
 # font
 font = cv2.FONT_HERSHEY_SIMPLEX
-
 
 # get current directory path
 dir_out = os.path.dirname(os.path.realpath(__file__))
@@ -23,8 +22,8 @@ cap = cv2.VideoCapture(dev)
 if __name__ == "__main__":
     # Meta.
     fps = cap.get(cv2.CAP_PROP_FPS)
-    width = cap.get(cv2.CAP_PROP_FRAME_WIDTH)
-    height = cap.get(cv2.CAP_PROP_FRAME_HEIGHT)
+    width = cap.get(cv2.CAP_PROP_FRAME_WIDTH) #1920.0
+    height = cap.get(cv2.CAP_PROP_FRAME_HEIGHT) #1080.0
     fourcc = cv2.VideoWriter_fourcc(*"mp4v")
     filename = os.path.join(dir_out, userID + ".mov")
     out = cv2.VideoWriter(filename, fourcc, (fps / 2), (int(width), int(height)))
@@ -49,13 +48,12 @@ if __name__ == "__main__":
             break
         relevance, testing = reactToKeyPress(key, markerOutlet, relevance, testing)
 
-
         # Capture frames.
         success, frame = cap.read()
         if not success:
             print("Can't receive frame (stream end?). Exiting ...")
             break
-
+        
         # convert the frame to RGB format
         image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
 
@@ -66,8 +64,8 @@ if __name__ == "__main__":
         keypoints = pose.process(flipped)
 
         # Convert the image back to BGR.
-        flipped = cv2.cvtColor(flipped, cv2.COLOR_RGB2BGR)
-
+        flipped = cv2.cvtColor(flipped, cv2.COLOR_RGB2BGR) 
+        
         # Use lm and lmPose as representative of the following methods.
         lm = keypoints.pose_landmarks
         lmPose = mp_pose.PoseLandmark
@@ -89,7 +87,11 @@ if __name__ == "__main__":
 
         out.write(flipped)
         outlet.push_sample([frameCounter, es_ang, ew_ang, t_ang])
+        # change output window size
+        cv2.namedWindow("Movement Feedback", cv2.WINDOW_NORMAL)
+        cv2.resizeWindow("Movement Feedback", 2450, 1640)
         cv2.imshow("Movement Feedback", flipped)
+        cv2.moveWindow("Movement Feedback", 75, 0)
         frameCounter += 1
 
     cap.release()
