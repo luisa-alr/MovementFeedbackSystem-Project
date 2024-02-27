@@ -1,4 +1,4 @@
-# Movement Feedback System (official name TBD)
+# Movement Feedback System
 
 ### A Movement Feedback System (python-based) that uses accelerometers and augmented video (using OpenCV) with landmarks to provide feedback on a specific movement. The code is currently programmed to analyze the basketball free throw technique. All the components of this project become LSL streams in the network and allow time-synchronized recording of the data into binary pickle files.
 
